@@ -1,40 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
+import { Plus } from "lucide-react"; // clean, modern icon
 
 interface FileUploadProps {
   onFileSelect: (file: File | null) => void;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect }) => {
-  const [preview, setPreview] = useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] ?? null;
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
     onFileSelect(file);
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setPreview(reader.result as string);
-      reader.readAsDataURL(file);
-    } else {
-      setPreview(null);
-    }
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div>
       <input
         type="file"
-        accept="image/*"
+        ref={fileInputRef}
         onChange={handleFileChange}
-        className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 dark:bg-gray-700 dark:border-gray-600"
+        className="hidden"
       />
-      {preview && (
-        <img
-          src={preview}
-          alt="Preview"
-          className="w-48 h-auto rounded border border-gray-300 mt-2"
-        />
-      )}
+      <button
+        type="button"
+        onClick={() => fileInputRef.current?.click()}
+        className="flex items-center justify-center w-10 h-10 rounded-full 
+                   bg-gradient-to-r from-[#00FF9C] to-[#00C9A7] 
+                   text-gray-900 font-bold text-xl 
+                   shadow-md hover:scale-105 transition-transform duration-200"
+        title="Attach file"
+      >
+        <Plus size={20} />
+      </button>
     </div>
   );
 };
