@@ -36,7 +36,8 @@ const App: React.FC = () => {
       <div className="flex flex-grow overflow-hidden">
         <Sidebar />
         <div className="flex flex-col flex-grow bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-          <ChatBox messages={messages} isTyping={isTyping} />
+         <ChatBox {...({ messages, isTyping } as any)} />
+
           <Footer {...({ onSend: sendMessage } as any)} />
         </div>
       </div>
